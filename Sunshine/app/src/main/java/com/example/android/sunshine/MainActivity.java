@@ -20,6 +20,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        /*
+        * Everything in the code was fine. It was just that your activity was not calling the fragment. This is how it's
+        * done. 
+        * */
+        if(savedInstanceState==null)
+        getSupportFragmentManager().beginTransaction().replace(R.id.container,new PlaceHolderFragment()).commit();
     }
 
     /**
