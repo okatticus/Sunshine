@@ -74,13 +74,13 @@ public class ForecastFragment extends Fragment {
                                             @Override
                                             public void onItemClick(AdapterView<?> adapterView,View view ,int position ,long l )
                                             {
-                                                Context context;
+                                               /* Context context;
                                                context = getActivity().getApplicationContext();
-                                                /*CharSequence text = mForecastAdapter.getItem(position);
+                                                CharSequence text = mForecastAdapter.getItem(position);
                                                 int duration = Toast.LENGTH_SHORT;
                                                 Toast toast = Toast.makeText(context , text, duration);
                                                 toast.show();*/
-                                                Intent upIntent = new Intent(context, DetailActivity.class);
+                                                Intent upIntent = new Intent(getContext(), DetailActivity.class);
                                                 upIntent.putExtra(Intent.EXTRA_TEXT ,mForecastAdapter.getItem(position));
                                                 startActivity(upIntent);
                                                // Log.v(TAG,"Hey!");
