@@ -16,7 +16,8 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         if(savedInstanceState==null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, new PlaceHolderFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container_detail, new PlaceHolderFragment()).commit();
+            //Container is placed in the activity layout. This is called a container coz it contains the fragment.
         }
     }
 
