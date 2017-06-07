@@ -2,6 +2,7 @@ package com.example.android.sunshine; /**
  * Created by Apoorva on 6/5/2017.
  */
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -15,8 +16,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -65,6 +68,25 @@ public class ForecastFragment extends Fragment {
         ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
         listView.setAdapter(mForecastAdapter);
         setHasOptionsMenu(true);
+        final String TAG = "INTENT . DETAIL_ACTIVITY ";
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+                                        {
+                                            @Override
+                                            public void onItemClick(AdapterView<?> adapterView,View view ,int position ,long l )
+                                            {
+                                                Context context;
+                                               context = getActivity().getApplicationContext();
+                                                /*CharSequence text = mForecastAdapter.getItem(position);
+                                                int duration = Toast.LENGTH_SHORT;
+                                                Toast toast = Toast.makeText(context , text, duration);
+                                                toast.show();*/
+                                                Intent upIntent = new Intent(context, DetailActivity.class);
+                                                upIntent.putExtra(Intent.EXTRA_TEXT ,mForecastAdapter.getItem(position));
+                                                startActivity(upIntent);
+                                               // Log.v(TAG,"Hey!");
+                                            }
+                                        }
+        );
         return rootView;
     }
     @Override
