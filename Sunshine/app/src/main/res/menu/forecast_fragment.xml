@@ -3,5 +3,7 @@
     <item
         android:title="Refresh"
         android:id="@+id/action_refresh" />
+    <item android:title="Settings"
+        android:id="@+id/action_settings" />
 
 </menu>

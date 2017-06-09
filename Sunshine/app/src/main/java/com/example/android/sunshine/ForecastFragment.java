@@ -4,9 +4,11 @@ package com.example.android.sunshine; /**
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -42,9 +44,9 @@ import java.util.List;
  * Make a PlaceHolder fragment as a part of the main activity
  * A fragment is a part of UI of an activity, its a re-usable class : com.example.android.sunshine.ForecastFragment
  */
+
 public class ForecastFragment extends Fragment {
     private ArrayAdapter<String> mForecastAdapter;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,7 +54,7 @@ public class ForecastFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         //Create some dummy data for Sunshine UI
-        String[] weather = {
+       /* String[] weather = {
                 "Today - Cloudy - 10K",
                 "June 12 - Sunny - 12K",
                 "June 13 - Rainy - 14K",
@@ -60,9 +62,9 @@ public class ForecastFragment extends Fragment {
                 "June 15 - Rain Storm - 14K",
                 "June 16 - Windy - 12K", "June 17 - HELP ! TRAPPED IN WEATHER STATION"
         };
-        List<String> weekForecast = new ArrayList<String>(Arrays.asList(weather));
+        List<String> weekForecast = new ArrayList<String>(Arrays.asList(weather));*/
          mForecastAdapter =
-                new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview, weekForecast);
+                new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview, new ArrayList<String>());
 
 
         ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
@@ -95,13 +97,34 @@ public class ForecastFragment extends Fragment {
                 R.menu.forecast_fragment, menu
         );
     }
+    private void updateWeather(){
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String pin = prefs.getString("pref_location_key",null);
+        FetchWeatherTask fw = new FetchWeatherTask();
+        fw.execute(pin);
+    }
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        updateWeather();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        FetchWeatherTask object = new FetchWeatherTask();
-        object.execute("177001");
-        return super.onOptionsItemSelected(item);
+        switch(item.getItemId())
+        {
+            case R.id.action_refresh:
+                updateWeather();
+                break;
+            case R.id.action_settings:
+            {
+
+            }
+
+        }
+    return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -171,9 +194,6 @@ public class ForecastFragment extends Fragment {
                 // Get the JSON object representing the day
                 JSONObject dayForecast = weatherArray.getJSONObject(i);
 
-                // The date/time is returned as a long.  We need to convert that
-                // into something human-readable, since most people won't read "1400356800" as
-                // "this saturday".
                 long dateTime = dayForecast.getLong(OWM_DATETIME);
                 day = getReadableDateString(dateTime);
 
