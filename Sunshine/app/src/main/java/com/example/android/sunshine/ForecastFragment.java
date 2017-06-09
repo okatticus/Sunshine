@@ -40,29 +40,16 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Make a PlaceHolder fragment as a part of the main activity
- * A fragment is a part of UI of an activity, its a re-usable class : com.example.android.sunshine.ForecastFragment
- */
+
 
 public class ForecastFragment extends Fragment {
     private ArrayAdapter<String> mForecastAdapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //Inflate the layout for this fragment
+        
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        //Create some dummy data for Sunshine UI
-       /* String[] weather = {
-                "Today - Cloudy - 10K",
-                "June 12 - Sunny - 12K",
-                "June 13 - Rainy - 14K",
-                "June 14 - Rainy - 17K",
-                "June 15 - Rain Storm - 14K",
-                "June 16 - Windy - 12K", "June 17 - HELP ! TRAPPED IN WEATHER STATION"
-        };
-        List<String> weekForecast = new ArrayList<String>(Arrays.asList(weather));*/
          mForecastAdapter =
                 new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview, new ArrayList<String>());
 
@@ -76,16 +63,9 @@ public class ForecastFragment extends Fragment {
                                             @Override
                                             public void onItemClick(AdapterView<?> adapterView,View view ,int position ,long l )
                                             {
-                                               /* Context context;
-                                               context = getActivity().getApplicationContext();
-                                                CharSequence text = mForecastAdapter.getItem(position);
-                                                int duration = Toast.LENGTH_SHORT;
-                                                Toast toast = Toast.makeText(context , text, duration);
-                                                toast.show();*/
                                                 Intent upIntent = new Intent(getContext(), DetailActivity.class);
                                                 upIntent.putExtra(Intent.EXTRA_TEXT ,mForecastAdapter.getItem(position));
                                                 startActivity(upIntent);
-                                               // Log.v(TAG,"Hey!");
                                             }
                                         }
         );
@@ -140,9 +120,7 @@ public class ForecastFragment extends Fragment {
          */
 
         private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
-        /* The date/time conversion code is going to be moved outside the asynctask later,
-         * so for convenience we're breaking it out into its own method now.
-         */
+      
         private String getReadableDateString(long time){
             // Because the API returns a unix timestamp (measured in seconds),
             // it must be converted to milliseconds in order to be converted to valid date.
@@ -152,7 +130,7 @@ public class ForecastFragment extends Fragment {
         }
 
         /**
-         * Prepare the weather high/lows for presentation.
+         *  weather high/lows for presentation.
          */
         private String formatHighLows(double high, double low) {
             // For presentation, assume the user doesn't care about tenths of a degree.
@@ -186,7 +164,7 @@ public class ForecastFragment extends Fragment {
 
             String[] resultStrs = new String[numDays];
             for(int i = 0; i < weatherArray.length(); i++) {
-                // For now, using the format "Day, description, hi/low"
+                
                 String day;
                 String description;
                 String highAndLow;
@@ -201,8 +179,7 @@ public class ForecastFragment extends Fragment {
                 JSONObject weatherObject = dayForecast.getJSONArray(OWM_WEATHER).getJSONObject(0);
                 description = weatherObject.getString(OWM_DESCRIPTION);
 
-                // Temperatures are in a child object called "temp".  Try not to name variables
-                // "temp" when working with temperature.  It confuses everybody.
+                // Temperatures are in a child object called "temp".  
                 JSONObject temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE);
                 double high = temperatureObject.getDouble(OWM_MAX);
                 double low = temperatureObject.getDouble(OWM_MIN);
@@ -226,8 +203,7 @@ public class ForecastFragment extends Fragment {
             int numDays= 7;
             String id="2b602d1d73519843d6df028cb7ae473f";
             try {
-                // Construct the URL for the OpenWeatherMap query
-                // Possible parameters are avaiable at OWM's forecast API page, at
+                
                 // http://openweathermap.org/API#forecast
              /*
              //http://api.openweathermap.org/data/2.5/forecast/daily?q=177001&mode=json&units=metric&cnt=7&appid=2b602d1d73519843d6df028cb7ae473f
@@ -252,12 +228,10 @@ public class ForecastFragment extends Fragment {
                 URL url = new URL(builtUri.toString());
                 Log.v(LOG_TAG,"Built URI" + builtUri.toString());
 
-                // Create the request to OpenWeatherMap, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.connect();
 
-                // Read the input stream into a String
                 InputStream inputStream = urlConnection.getInputStream();
                 StringBuffer buffer = new StringBuffer();
                 if (inputStream == null) {
@@ -308,7 +282,7 @@ public class ForecastFragment extends Fragment {
         @Override
         protected void onPostExecute(String[] result) {
             if(result != null)
-            {//First clear the dummy data.
+            {
                 mForecastAdapter.clear();
                 for (String dayForecastString : result)
                 {
