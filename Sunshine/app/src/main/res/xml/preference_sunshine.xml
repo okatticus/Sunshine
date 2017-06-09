@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Location Settings">
+        <EditTextPreference
+            android:key="@string/ZIP_pref"
+            android:title="Location"
+            android:defaultValue="177005"
+            android:summary="Enter your location or postal-code."/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Unit and Measurement">
+        <ListPreference
+            android:key="@string/UNIT_pref"
+            android:title="Unit"
+            android:summary="Metric or Imperial"
+            android:defaultValue="0"
+            android:entries="@array/UNIT_pref_display"
+            android:entryValues="@array/UNIT_pref_values"/>
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -1,4 +1,4 @@
-package com.example.android.sunshine; /**
+package com.example.android.sunshine.fragment; /**
  * Created by Apoorva on 6/5/2017.
  */
 
@@ -23,6 +23,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.android.sunshine.DetailActivity;
+import com.example.android.sunshine.R;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,6 +47,7 @@ import java.util.List;
 
 public class ForecastFragment extends Fragment {
     private ArrayAdapter<String> mForecastAdapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -77,12 +81,14 @@ public class ForecastFragment extends Fragment {
                 R.menu.forecast_fragment, menu
         );
     }
+
     private void updateWeather(){
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String pin = prefs.getString("pref_location_key",null);
+        String pin = prefs.getString(getString(R.string.ZIP_pref),"177005");
         FetchWeatherTask fw = new FetchWeatherTask();
         fw.execute(pin);
     }
+
     @Override
     public void onStart()
     {
@@ -115,6 +121,7 @@ public class ForecastFragment extends Fragment {
 
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
+        private String cityName;
         /**
          * Networking snippet :https://gist.github.com/anonymous/6b306e1f6a21b3718fa4
          */
@@ -158,8 +165,14 @@ public class ForecastFragment extends Fragment {
             final String OWM_MIN = "min";
             final String OWM_DATETIME = "dt";
             final String OWM_DESCRIPTION = "main";
+            //Parsing to get the CITY name
+            final String OBJ_CITY = "city";
+            final String OWM_CITY_NAME = "name";
 
             JSONObject forecastJson = new JSONObject(forecastJsonStr);
+            JSONObject city = forecastJson.getJSONObject(OBJ_CITY);
+            cityName = city.getString(OWM_CITY_NAME);
+
             JSONArray weatherArray = forecastJson.getJSONArray(OWM_LIST);
 
             String[] resultStrs = new String[numDays];
@@ -283,6 +296,7 @@ public class ForecastFragment extends Fragment {
         protected void onPostExecute(String[] result) {
             if(result != null)
             {
+                Toast.makeText(getContext(),cityName,Toast.LENGTH_SHORT).show();
                 mForecastAdapter.clear();
                 for (String dayForecastString : result)
                 {
