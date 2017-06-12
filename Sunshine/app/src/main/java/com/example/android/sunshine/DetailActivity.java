@@ -18,42 +18,42 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        if(savedInstanceState==null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container_detail, new PlaceHolderFragment()).commit();
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().add(R.id.container, new PlaceHolderFragment()).commit();
         }
-    }
-
- public  static  class PlaceHolderFragment extends Fragment
-    {
-        public PlaceHolderFragment(){
 
     }
-    @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState)
-    {
-        Intent intent = getActivity().getIntent();
-        View rootView = inflater.inflate(R.layout.fragment_detail,container , false);
-        if(intent != null && intent.hasExtra(intent.EXTRA_TEXT))
-        {
-            String forecast = intent.getStringExtra(intent.EXTRA_TEXT);
-            TextView textView = (TextView)rootView.findViewById(R.id.details);
-            this.setHasOptionsMenu(true);
-            textView.setText(forecast);
+
+    public static class PlaceHolderFragment extends Fragment {
+        public PlaceHolderFragment() {
+
         }
-        return rootView;
-    }
+
         @Override
-        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-            inflater.inflate(
-                    R.menu.menu_detail, menu
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            Intent intent = getActivity().getIntent();
+            View rootView = inflater.inflate(R.layout.fragment_detail, container,false);
+            if(intent!=null && intent.hasExtra(Intent.EXTRA_TEXT))
+            {
+                String forecast = intent.getStringExtra(Intent.EXTRA_TEXT);
+                TextView textView = (TextView)rootView.findViewById(R.id.detail_text_id);
+                textView.setText(forecast);
+            }
+            setHasOptionsMenu(true);
+            return rootView;
+        }
+        @Override
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+        {
+            inflater.inflate( R.menu.menu,menu
             );
         }
-        public boolean onOptionsItemSelected(MenuItem item) {
-            switch(item.getItemId()){
-                case R.id.action_settings:
-                    startActivity(new Intent(getContext(),SettingsActivity.class));
-                    return true;
+        public boolean onOptionsItemSelected(MenuItem item){
+            int id= item.getItemId();
+            if( id == R.id.settings_id)
+            {
+                startActivity(new Intent(getActivity(),SettingsActivity.class));
+                return true;
             }
             return super.onOptionsItemSelected(item);
         }
