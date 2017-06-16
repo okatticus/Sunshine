@@ -2,6 +2,7 @@ package com.example.android.sunshine;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -42,18 +43,9 @@ public class ForecastFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        String[] forecastArray = {
-                "Today - Sunny - 88/63",
-                "Tues - Meteors - 70/40",
-                "Weds - Cyclones - 72/63",
-                "Thurs - Asteroids - 75/65",
-                "Fri - Heavy Rain - 66/64",
-                "Sat - Tsunami - 52/50",
-                "Sun - Sunny - 84/60"
-        };
-        List<String> weekForecast = new ArrayList<String>(Arrays.asList(forecastArray));
-        mAdapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast, R.id.list_text_id, weekForecast);
-        //Get reference to listview and attach adapter
+
+        mAdapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast, R.id.list_text_id, new ArrayList<String>());
+        //Get reference to listView and attach adapter
         setHasOptionsMenu(true);
         ListView listView = (ListView) rootView.findViewById(R.id.listView_id);
         listView.setAdapter(mAdapter);
@@ -75,12 +67,14 @@ public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
 {
     inflater.inflate( R.menu.menu,menu
     );
+
 }
 @Override public void onStart()
 {
     super.onStart();
     updateWeather();
 }
+
 public void updateWeather()
 {
     FetchWeatherTask weatherTask = new FetchWeatherTask();
@@ -139,14 +133,17 @@ public boolean onOptionsItemSelected(MenuItem item)
             final String OWM_Min = "min";
             final String OWM_DateTime = "dt";
             final String OWM_Description = "main";
+
             JSONObject forecastJson = new JSONObject(forecastJsonStr);
             JSONArray weatherArray = forecastJson.getJSONArray(OWM_List);
             String[] resultStrs = new String[numDays];
+
             for (int i = 0; i < weatherArray.length(); i++) {
 
                 String day;
                 String description;
                 String highAndLow;
+
 
                 // Get the JSON object representing the day
                 JSONObject dayForecast = weatherArray.getJSONObject(i);
@@ -160,7 +157,7 @@ public boolean onOptionsItemSelected(MenuItem item)
                 double high = temperatureObject.getDouble(OWM_Max);
                 double low = temperatureObject.getDouble(OWM_Min);
                 highAndLow = formatHighLows(high, low);
-                resultStrs[i] = day + " - " + description + " - " + highAndLow;
+                resultStrs[i] =  day + " - " + description + " - " + highAndLow;
             }
 
             return resultStrs;

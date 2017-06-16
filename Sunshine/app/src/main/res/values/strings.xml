@@ -5,6 +5,7 @@
     <string name="pin_location_key">Postal code</string>
     <string name="pref_location_default">177001</string>
     <string name="prefUnit">prefUnitKey</string>
+    <string name="menu_share">Share</string>
     <string name="prefUnit_imperial">Imperial</string>
     <string name="prefUnit_default">Metric</string>
 </resources>

@@ -5,8 +5,5 @@
         android:id="@+id/settings_id"/>
     <item android:title="@string/refresh"
         android:id="@+id/refresh_id"/>
-    <item
-        android:title="MAP"
-        android:id="@+id/map_id"
-        app:showAsAction="never"/>
+
 </menu>
