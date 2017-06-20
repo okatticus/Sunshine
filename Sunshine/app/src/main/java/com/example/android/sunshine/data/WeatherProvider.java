@@ -5,6 +5,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -26,13 +27,72 @@ public class WeatherProvider extends ContentProvider {
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
     private DbHelper mOpenHelper;
+    private static final SQLiteQueryBuilder sWeatherByLocationSettingQueryBuilder;
+    static {
+        sWeatherByLocationSettingQueryBuilder = new SQLiteQueryBuilder();
+        sWeatherByLocationSettingQueryBuilder.setTables(
+                WeatherContract.WeatherEntry.TABLE_NAME + " INNER JOIN " +
+                        WeatherContract.LocationEntry.TABLE_NAME +
+                        " ON "+ WeatherContract.WeatherEntry.TABLE_NAME +
+                        "."+ WeatherContract.WeatherEntry.COLUMN_LOC_KEY +
+                        "=" + WeatherContract.LocationEntry.TABLE_NAME +
+                        "."+ WeatherContract.LocationEntry._ID);
+    }
+    //QUERY
+    private static final String sLocationSettingSelection =
+            WeatherContract.LocationEntry.TABLE_NAME +
+                    "." + WeatherContract.LocationEntry.COLUMN_LOC_SETTING
+            +" =? ";
+    private static final String sLocationSettingWithStartDateSelection =
+            WeatherContract.LocationEntry.TABLE_NAME+
+                    "."+ WeatherContract.LocationEntry.COLUMN_LOC_SETTING
+            + " =? AND " +
+                    WeatherContract.WeatherEntry.COLUMN_DATE + " >= ? ";
+    private static final String sLocationSettingWithDateSelection =
+            WeatherContract.LocationEntry.TABLE_NAME+
+                    "."+ WeatherContract.LocationEntry.COLUMN_LOC_SETTING
+            +" =? AND " +
+                    WeatherContract.WeatherEntry.COLUMN_DATE + " =? ";
+    private Cursor getWeatherByLocationSetting(Uri uri, String[] projection, String sortOrder){
+        String locationSetting = WeatherContract.WeatherEntry.getLocationSettingFromUri(uri);
+        String startDate = WeatherContract.WeatherEntry.getStartDateFromUri(uri);
+
+        String[] selectionArgs;
+        String selection;
+        if(startDate == null){
+            selection = sLocationSettingSelection;
+            selectionArgs = new String[]{locationSetting};
+        }else{
+            selection = sLocationSettingWithStartDateSelection;
+            selectionArgs = new String[]{locationSetting, startDate};
+        }
+        return sWeatherByLocationSettingQueryBuilder.query(mOpenHelper.getWritableDatabase(),
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder);
+    }
     @Override
     public boolean onCreate() {
 
         mOpenHelper = new DbHelper(getContext());
         return true;
     }
-
+    private Cursor getWeatherByLocationSettingWithDate(Uri uri,@Nullable String[] projection,@Nullable  String sortOrder ){
+      //  String date = WeatherContract.WeatherEntry.getDateFromUri(uri);
+        String day = WeatherContract.WeatherEntry.getDateFromUri(uri);
+        String locationSetting = WeatherContract.WeatherEntry.getLocationSettingFromUri(uri);
+        return sWeatherByLocationSettingQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+                projection,
+                sLocationSettingWithDateSelection,
+                new String[]{locationSetting, day},
+                null,
+                null,
+                sortOrder
+        );
+    }
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
@@ -40,12 +100,12 @@ public class WeatherProvider extends ContentProvider {
         switch(sUriMatcher.match(uri)){
             case WEATHER_WITH_LOCATION_AND_DATE:
             {
-                retCursor = null;
+                retCursor = getWeatherByLocationSettingWithDate(uri, projection, sortOrder);
                 break;
             }
             case WEATHER_WITH_LOCATION:
             {
-                retCursor = null;
+                retCursor = getWeatherByLocationSetting(uri,projection,sortOrder);
                 break;
             }
             case WEATHER:

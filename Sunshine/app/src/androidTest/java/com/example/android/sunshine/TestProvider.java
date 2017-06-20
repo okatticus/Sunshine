@@ -23,17 +23,18 @@ public class TestProvider extends AndroidTestCase {
     public static final String LOG_TAG = TestDb.class.getSimpleName();
 
     public static String TEST_LOCATION = "99705";
-    public static String TEST_DATE = "20141205";
-    static String TEST_CITY_NAME = "Narnia";
+    public static String TEST_DATE = "20062017";
+    static String TEST_CITY_NAME = "TOKYO";
 
     public void testDeleteDb() throws Throwable {
 //Test runner only runs
         mContext.deleteDatabase(DbHelper.DATABASE_NAME);
 
     }
-    static  public ContentValues getLocationContentValues(){
+
+    static public ContentValues getLocationContentValues() {
         ContentValues val = new ContentValues();
-        String testLocationSetting = "99705";
+        String testLocationSetting = TEST_LOCATION;
         double testLatitude = 12.01;
         double testLongitude = 37.61;
         //Android uses values of columns as keys
@@ -77,9 +78,7 @@ public class TestProvider extends AndroidTestCase {
         //Getting a writable database
         DbHelper dbHelper = new DbHelper(mContext);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-
         ContentValues values = getLocationContentValues();
-
         //Enter data to database
         long rowId;
         rowId = db.insert(LocationEntry.TABLE_NAME, null, values);
@@ -96,31 +95,61 @@ public class TestProvider extends AndroidTestCase {
         if (cursor.moveToFirst()) {
             validateCursor(values, cursor);
             cursor.close();
-
        /*db query:  Cursor cursor = db.query(
        LocationEntry.TABLE_NAME, cols, null, null, null, null, null);
         */
-        ContentValues weatherValues;
-        weatherValues = getWeatherContentValues(rowId);
-        long weatherRowId;
-        weatherRowId = db.insert(WeatherEntry.TABLE_NAME, null, weatherValues);
-        assertTrue(weatherRowId != -1);
+            ContentValues weatherValues;
+            weatherValues = getWeatherContentValues(rowId);
+            long weatherRowId;
+            weatherRowId = db.insert(WeatherEntry.TABLE_NAME, null, weatherValues);
+            assertTrue(weatherRowId != -1);
 
-        Cursor weatherTableCursor = mContext.getContentResolver().query(
-                WeatherEntry.CONTENT_URI,
-                null,
-                null,
-                null,
-                null
-        );
-        if (weatherTableCursor.moveToFirst()) {
-            validateCursor(weatherValues, weatherTableCursor);
-            cursor.close();
-        } else {
-            fail("No weather data returned by weather tableCursor ");
-        } } else {
-        fail("No data returned by cursor here. ");
+            Cursor weatherTableCursor = mContext.getContentResolver().query(
+                    WeatherEntry.CONTENT_URI,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+            if (weatherTableCursor.moveToFirst()) {
+                validateCursor(weatherValues, weatherTableCursor);
+
+            } else {
+                fail("No weather data returned by weather tableCursor ");
+            }
+            weatherTableCursor.close();
+
+            weatherTableCursor = mContext.getContentResolver().query(
+                    WeatherEntry.buildWeatherLocationWithStartDate(TEST_LOCATION, TEST_DATE),
+                    null,
+                    null,
+                    null,
+                    null
+            );
+            if (weatherTableCursor.moveToFirst()) {
+                validateCursor(weatherValues, weatherTableCursor);
+            } else {
+                fail("No weather data returned by weather tableCursor ");
+            }
+            weatherTableCursor.close();
+            weatherTableCursor = mContext.getContentResolver().query(
+                    WeatherEntry.buildWeatherLocationWithDate(TEST_LOCATION, TEST_DATE),
+                    null,
+                    null,
+                    null,
+                    null
+            );
+            if (weatherTableCursor.moveToFirst()) {
+                validateCursor(weatherValues, weatherTableCursor);
+            } else {
+                fail("No weather data returned by weather tableCursor ");
+            }
+        } else
+        {
+            fail( "No values returned .");
+        }
+        cursor.close();
     }
-    }
+
 }
 
