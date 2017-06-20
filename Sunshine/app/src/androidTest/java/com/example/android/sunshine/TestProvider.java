@@ -1,12 +1,15 @@
 package com.example.android.sunshine;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.test.AndroidTestCase;
 import android.util.Log;
 
 import com.example.android.sunshine.data.DbHelper;
+import com.example.android.sunshine.data.WeatherContract;
 import com.example.android.sunshine.data.WeatherContract.WeatherEntry;
 import com.example.android.sunshine.data.WeatherContract.LocationEntry;
 
@@ -75,16 +78,9 @@ public class TestProvider extends AndroidTestCase {
 
     public void testInsertReadProvider() {
 
-        //Getting a writable database
-        DbHelper dbHelper = new DbHelper(mContext);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = getLocationContentValues();
-        //Enter data to database
-        long rowId;
-        rowId = db.insert(LocationEntry.TABLE_NAME, null, values);
-        //Verify
-        assertTrue(rowId != -1);
-        Log.d("TestDb.java", "New Row ID: " + rowId);
+        Uri insertLocUri = mContext.getContentResolver().insert(LocationEntry.CONTENT_URI,values);
+        long rowId= ContentUris.parseId(insertLocUri);
         Cursor cursor = mContext.getContentResolver().query(
                 LocationEntry.CONTENT_URI,
                 null,
@@ -92,6 +88,7 @@ public class TestProvider extends AndroidTestCase {
                 null,
                 null
         );
+
         if (cursor.moveToFirst()) {
             validateCursor(values, cursor);
             cursor.close();
@@ -101,8 +98,8 @@ public class TestProvider extends AndroidTestCase {
             ContentValues weatherValues;
             weatherValues = getWeatherContentValues(rowId);
             long weatherRowId;
-            weatherRowId = db.insert(WeatherEntry.TABLE_NAME, null, weatherValues);
-            assertTrue(weatherRowId != -1);
+            Uri insertUri =  mContext.getContentResolver().insert(WeatherEntry.CONTENT_URI,weatherValues);
+            weatherRowId = ContentUris.parseId(insertUri);
 
             Cursor weatherTableCursor = mContext.getContentResolver().query(
                     WeatherEntry.CONTENT_URI,
