@@ -41,7 +41,6 @@ public class DbHelper extends SQLiteOpenHelper {
                 WeatherEntry.COLUMN_HUMITY + " REAL NOT NULL, " +
                 WeatherEntry.COLUMN_PRESSURE + " REAL NOT NULL, " +
                 WeatherEntry.COLUMN_WINDSPEED+ " REAL NOT NULL, " +
-                WeatherEntry.COLUMN_DEGREES + " REAL NOT NULL, " +
                 WeatherEntry.COLUMN_WINDDIRECTION + " REAL NOT NULL, " +
                 //Set up location key as foreign key.
                 "FOREIGN KEY ( " + WeatherEntry.COLUMN_LOC_KEY + ") REFERENCES " +

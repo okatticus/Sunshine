@@ -6,11 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -113,10 +109,10 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
         final String OWM_CITY = "city";
         final String OWM_CITY_NAME = "name";
         final String OWM_COORD = "coord";
-
         //Location coord.
         final String OWM_LATITUDE = "lat";
         final String OWM_LONGITUDE = "lon";
+
         final String OWM_LIST = "list";
         final String OWM_WEATHER = "weather";
         final String OWM_WINDSPEED_NAME = "speed";
@@ -129,7 +125,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
         final String OWM_DATE = "dt";
 
         final String OWM_DESCRIPTION_NAME = "description";
-        final String OWM_WEATHER_TD = "id";
+        final String OWM_WEATHER_ID = "id";
         try {
             JSONObject forecastJson = new JSONObject(forecastJsonStr);
             JSONArray weatherArray = forecastJson.getJSONArray(OWM_LIST);
@@ -147,7 +143,6 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
             Vector<ContentValues> weatherVector = new Vector<ContentValues>(weatherArray.length());
 
             for (int i = 0; i < weatherArray.length(); i++)
-
             {
                 JSONObject dayForecast = weatherArray.getJSONObject(i);
 
@@ -159,7 +154,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 
                 JSONObject weather = dayForecast.getJSONArray(OWM_WEATHER).getJSONObject(0);
                 String description = weather.getString(OWM_DESCRIPTION_NAME);
-                String weatherId = weather.getString(OWM_WEATHER_TD);
+                String weatherId = weather.getString(OWM_WEATHER_ID);
 
                 JSONObject temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE);
                 double min = temperatureObject.getDouble(OWM_TEMP_MIN);
@@ -179,7 +174,6 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
                 values.put(WeatherContract.WeatherEntry.COLUMN_MIN, min);
                 values.put(WeatherContract.WeatherEntry.COLUMN_WINDDIRECTION, windDirection);
                 values.put(WeatherContract.WeatherEntry.COLUMN_WEATHER_ID, weatherId);
-                values.put(WeatherContract.WeatherEntry.COLUMN_DEGREES, windDirection);
 
                 weatherVector.add(values);
             }//for loop ends
@@ -226,6 +220,4 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
             return ContentUris.parseId(locationInsertUri);
         }
     }
-
-
 }

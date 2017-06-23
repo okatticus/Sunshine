@@ -46,7 +46,7 @@ public class TestProvider extends AndroidTestCase {
         ContentValues weatherValues = new ContentValues();
         weatherValues.put(WeatherEntry.COLUMN_LOC_KEY, rowId);
         weatherValues.put(WeatherEntry.COLUMN_DATE, TEST_DATE);
-        weatherValues.put(WeatherEntry.COLUMN_DEGREES, 1.1);
+        weatherValues.put(WeatherEntry.COLUMN_WINDDIRECTION, 1.1);
         weatherValues.put(WeatherEntry.COLUMN_HUMITY, 1.2);
         weatherValues.put(WeatherEntry.COLUMN_PRESSURE, 1.3);
         weatherValues.put(WeatherEntry.COLUMN_MAX, 73);
@@ -185,7 +185,7 @@ public class TestProvider extends AndroidTestCase {
         //Verify we got a row back.
         assertTrue(locationRowId != -1);
         Log.d(LOG_TAG, "New row id: " + locationRowId);
-//Updated values are in velues2
+        //Updated values are in values2
         ContentValues values2 = new ContentValues(values);
         values2.put(LocationEntry._ID, locationRowId);
         values2.put(LocationEntry.COLUMN_CITY_NAME, "Narnia");

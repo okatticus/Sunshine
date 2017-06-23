@@ -71,7 +71,6 @@ public class WeatherContract {
         public static final String COLUMN_HUMITY = "humidity";
         public static final String COLUMN_PRESSURE = "pressure";
         public static final String COLUMN_WINDSPEED ="windspeed";
-        public static final String COLUMN_DEGREES = "degrees";
         public static final String COLUMN_WINDDIRECTION="direction";
 
         public static Uri buildWeatherUri( long id){
