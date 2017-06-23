@@ -90,6 +90,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
                 forecastJsonStr = null;
             }
             forecastJsonStr = buffer.toString();
+            Log.d(LOG_TAG,forecastJsonStr);
         }//try end
         catch (IOException ioe) {
             Log.e(LOG_TAG, ioe.getMessage(), ioe);
@@ -128,6 +129,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
         final String OWM_DATE = "dt";
 
         final String OWM_DESCRIPTION_NAME = "description";
+        final String OWM_WEATHER_TD = "id";
         try {
             JSONObject forecastJson = new JSONObject(forecastJsonStr);
             JSONArray weatherArray = forecastJson.getJSONArray(OWM_LIST);
@@ -144,7 +146,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
             //Putting weather forecast in database
             Vector<ContentValues> weatherVector = new Vector<ContentValues>(weatherArray.length());
 
-            for (int i = 1; i <= weatherArray.length(); i++)
+            for (int i = 0; i < weatherArray.length(); i++)
 
             {
                 JSONObject dayForecast = weatherArray.getJSONObject(i);
@@ -157,6 +159,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 
                 JSONObject weather = dayForecast.getJSONArray(OWM_WEATHER).getJSONObject(0);
                 String description = weather.getString(OWM_DESCRIPTION_NAME);
+                String weatherId = weather.getString(OWM_WEATHER_TD);
 
                 JSONObject temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE);
                 double min = temperatureObject.getDouble(OWM_TEMP_MIN);
@@ -166,6 +169,8 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
                 values.put(WeatherContract.WeatherEntry.COLUMN_LOC_KEY, cityName);
                 values.put(WeatherContract.WeatherEntry.COLUMN_DATE, WeatherContract.getDbDateString
                         (new Date(dateTime* 1000)));
+                values.put(WeatherContract.WeatherEntry.COLUMN_DATE_ASC, WeatherContract.getDbDateString
+                        (new Date(dateTime* 1000)));
                 values.put(WeatherContract.WeatherEntry.COLUMN_HUMITY, humidity);
                 values.put(WeatherContract.WeatherEntry.COLUMN_WINDSPEED, windSpeed);
                 values.put(WeatherContract.WeatherEntry.COLUMN_PRESSURE, pressure);
@@ -173,6 +178,8 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
                 values.put(WeatherContract.WeatherEntry.COLUMN_MAX, max);
                 values.put(WeatherContract.WeatherEntry.COLUMN_MIN, min);
                 values.put(WeatherContract.WeatherEntry.COLUMN_WINDDIRECTION, windDirection);
+                values.put(WeatherContract.WeatherEntry.COLUMN_WEATHER_ID, weatherId);
+                values.put(WeatherContract.WeatherEntry.COLUMN_DEGREES, windDirection);
 
                 weatherVector.add(values);
             }//for loop ends
