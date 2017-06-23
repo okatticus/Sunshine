@@ -4,6 +4,14 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+import java.text.ParseException;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+import java.util.TimeZone;
+
+import static android.provider.Settings.System.DATE_FORMAT;
+
 /**
  * Created by Apoorva on 6/16/2017.
  */
@@ -63,6 +71,7 @@ public class WeatherContract {
         public static final String COLUMN_PRESSURE = "pressure";
         public static final String COLUMN_WINDSPEED ="windspeed";
         public static final String COLUMN_DEGREES = "degrees";
+        public static final String COLUMN_WINDDIRECTION="direction";
 
         public static Uri buildWeatherUri( long id){
             return ContentUris.withAppendedId(CONTENT_URI,id);
@@ -86,7 +95,17 @@ public class WeatherContract {
         public static String getStartDateFromUri(Uri uri){
             return uri.getQueryParameter(COLUMN_DATE);
         }
-    }
 
+    }   public static String getDbDateString(Date date) throws ParseException{
+       // SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+       /* SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSX");
+        date  = sdf.parse("2014-09-17T12:00:44.0000000Z");*/
+        SimpleDateFormat format =
+                new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
+        format.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date parse = format.parse("2014-09-17T12:00:44.0000000Z");
+        return format.format(date);
+
+    }
 }
 

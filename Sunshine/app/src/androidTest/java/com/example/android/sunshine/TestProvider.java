@@ -29,39 +29,6 @@ public class TestProvider extends AndroidTestCase {
     public static String TEST_DATE = "20062017";
     static String TEST_CITY_NAME = "TOKYO";
 
-    public void testDeleteAllRecords(){
-        mContext.getContentResolver().delete(
-                WeatherEntry.CONTENT_URI,
-                null,
-                null
-        );
-        //We have to delete Weather Entry before we delete location entry.
-        mContext.getContentResolver().delete(
-                LocationEntry.CONTENT_URI,
-                null,
-                null
-        );
-        Cursor cursor = mContext.getContentResolver().query(
-                WeatherEntry.CONTENT_URI,
-                null,
-                null,
-                null,
-                null
-        );
-        assertEquals(cursor.getCount(),0);
-        cursor.close();
-        cursor = mContext.getContentResolver().query(
-                LocationEntry.CONTENT_URI,
-                null,
-                null,
-                null,
-                null
-        );
-        assertEquals(cursor.getCount(),0);
-        cursor.close();
-
-    }
-
     static public ContentValues getLocationContentValues() {
         ContentValues val = new ContentValues();
         String testLocationSetting = TEST_LOCATION;
@@ -103,11 +70,44 @@ public class TestProvider extends AndroidTestCase {
         }
     }
 
+    public void testDeleteAllRecords() {
+        mContext.getContentResolver().delete(
+                WeatherEntry.CONTENT_URI,
+                null,
+                null
+        );
+        //We have to delete Weather Entry before we delete location entry.
+        mContext.getContentResolver().delete(
+                LocationEntry.CONTENT_URI,
+                null,
+                null
+        );
+        Cursor cursor = mContext.getContentResolver().query(
+                WeatherEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null
+        );
+        assertEquals(cursor.getCount(), 0);
+        cursor.close();
+        cursor = mContext.getContentResolver().query(
+                LocationEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null
+        );
+        assertEquals(cursor.getCount(), 0);
+        cursor.close();
+
+    }
+
     public void testInsertReadProvider() {
 
         ContentValues values = getLocationContentValues();
-        Uri insertLocUri = mContext.getContentResolver().insert(LocationEntry.CONTENT_URI,values);
-        long rowId= ContentUris.parseId(insertLocUri);
+        Uri insertLocUri = mContext.getContentResolver().insert(LocationEntry.CONTENT_URI, values);
+        long rowId = ContentUris.parseId(insertLocUri);
         Cursor cursor = mContext.getContentResolver().query(
                 LocationEntry.CONTENT_URI,
                 null,
@@ -125,7 +125,7 @@ public class TestProvider extends AndroidTestCase {
             ContentValues weatherValues;
             weatherValues = getWeatherContentValues(rowId);
             long weatherRowId;
-            Uri insertUri =  mContext.getContentResolver().insert(WeatherEntry.CONTENT_URI,weatherValues);
+            Uri insertUri = mContext.getContentResolver().insert(WeatherEntry.CONTENT_URI, weatherValues);
             weatherRowId = ContentUris.parseId(insertUri);
 
             Cursor weatherTableCursor = mContext.getContentResolver().query(
@@ -168,47 +168,46 @@ public class TestProvider extends AndroidTestCase {
             } else {
                 fail("No weather data returned by weather tableCursor ");
             }
-        } else
-        {
-            fail( "No values returned .");
+        } else {
+            fail("No values returned .");
         }
         cursor.close();
-        /*testDeleteAllRecords();*/   }
-        public void testUpdateLocation(){
-            testDeleteAllRecords();
-            //Creating new map of values;
-            ContentValues values = getLocationContentValues();
-            Uri locationUri = mContext.getContentResolver().
-                    insert(LocationEntry.CONTENT_URI,values);
-            long locationRowId = ContentUris.parseId(locationUri);
-            //Verify we got a row back.
-            assertTrue(locationRowId != -1);
-            Log.d(LOG_TAG, "New row id: " + locationRowId);
+        /*testDeleteAllRecords();*/
+    }
+
+    public void testUpdateLocation() {
+        testDeleteAllRecords();
+        //Creating new map of values;
+        ContentValues values = getLocationContentValues();
+        Uri locationUri = mContext.getContentResolver().
+                insert(LocationEntry.CONTENT_URI, values);
+        long locationRowId = ContentUris.parseId(locationUri);
+        //Verify we got a row back.
+        assertTrue(locationRowId != -1);
+        Log.d(LOG_TAG, "New row id: " + locationRowId);
 //Updated values are in velues2
-            ContentValues values2 = new ContentValues(values);
-            values2.put(LocationEntry._ID, locationRowId);
-            values2.put(LocationEntry.COLUMN_CITY_NAME, "Narnia");
-            int count = mContext.getContentResolver().
-                    update( LocationEntry.CONTENT_URI,
-                            values2,
-                            LocationEntry._ID + " = ?",
-                            new String[]{""+ Long.toString(locationRowId)});
-            assertEquals(count,1);
-            Cursor cursor = mContext.getContentResolver().query(
-                    LocationEntry.buildLocationUri(locationRowId),
-                    null,
-                    null,
-                    null,
-                    null
-            );
-            if(cursor.moveToFirst()){
-                validateCursor(values2, cursor);
-            }
-            else
-            {
-                fail(" Test provider updatetest failed! ");
-            }
-            cursor.close();
+        ContentValues values2 = new ContentValues(values);
+        values2.put(LocationEntry._ID, locationRowId);
+        values2.put(LocationEntry.COLUMN_CITY_NAME, "Narnia");
+        int count = mContext.getContentResolver().
+                update(LocationEntry.CONTENT_URI,
+                        values2,
+                        LocationEntry._ID + " = ?",
+                        new String[]{"" + Long.toString(locationRowId)});
+        assertEquals(count, 1);
+        Cursor cursor = mContext.getContentResolver().query(
+                LocationEntry.buildLocationUri(locationRowId),
+                null,
+                null,
+                null,
+                null
+        );
+        if (cursor.moveToFirst()) {
+            validateCursor(values2, cursor);
+        } else {
+            fail(" Test provider updatetest failed! ");
         }
+        cursor.close();
+    }
 }
 
