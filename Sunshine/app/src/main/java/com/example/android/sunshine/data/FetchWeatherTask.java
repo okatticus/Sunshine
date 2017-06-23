@@ -121,10 +121,10 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
         final String OWM_WINDSPEED_NAME = "speed";
         final String OWM_WINDDIRECTION = "deg";
         final String OWM_HUMIDITY = "humidity";
-        final String OWM_TEMPERATURE = "main";
+        final String OWM_TEMPERATURE = "temp";
         final String OWM_PRESSURE = "pressure";
-        final String OWM_TEMP_MAX = "temp_max";
-        final String OWM_TEMP_MIN = "temp_min";
+        final String OWM_TEMP_MAX = "max";
+        final String OWM_TEMP_MIN = "min";
         final String OWM_DATE = "dt";
 
         final String OWM_DESCRIPTION_NAME = "description";
@@ -158,8 +158,9 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
                 JSONObject weather = dayForecast.getJSONArray(OWM_WEATHER).getJSONObject(0);
                 String description = weather.getString(OWM_DESCRIPTION_NAME);
 
-                long min = dayForecast.getLong(OWM_TEMP_MIN);
-                long max = dayForecast.getLong(OWM_TEMP_MAX);
+                JSONObject temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE);
+                double min = temperatureObject.getDouble(OWM_TEMP_MIN);
+                double max = temperatureObject.getDouble(OWM_TEMP_MAX);
 
                 ContentValues values = new ContentValues();
                 values.put(WeatherContract.WeatherEntry.COLUMN_LOC_KEY, cityName);
