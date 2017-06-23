@@ -62,6 +62,7 @@ public class WeatherContract {
         public static final String TABLE_NAME ="weather";
         public static final String COLUMN_LOC_KEY ="location_id";
         public static final String COLUMN_DATE= "date";
+        public static final String COLUMN_DATE_ASC = "dateASC";
         //Weather id is returned by the API,identifies which icon to use
         public static final String COLUMN_WEATHER_ID = "weather_id";
         public static final String COLUMN_SHORT_DESCRIPTION = "short_desc";

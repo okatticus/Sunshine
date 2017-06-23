@@ -29,9 +29,10 @@ public class DbHelper extends SQLiteOpenHelper {
 
        final String SQL_CREATE_WEATHER_TABLE = "CREATE TABLE " + WeatherEntry.TABLE_NAME +" (" +
 
-               WeatherEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                WeatherEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 WeatherEntry.COLUMN_LOC_KEY + " INTEGER NOT NULL, " +
                 WeatherEntry.COLUMN_DATE+ " TEXT NOT NULL, " +
+                WeatherEntry.COLUMN_DATE_ASC+ " TEXT NOT NULL, " +
                 WeatherEntry.COLUMN_SHORT_DESCRIPTION+ " TEXT NOT NULL, " +
                 WeatherEntry.COLUMN_WEATHER_ID + " INTEGER NOT NULL, " +
 
@@ -41,7 +42,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 WeatherEntry.COLUMN_PRESSURE + " REAL NOT NULL, " +
                 WeatherEntry.COLUMN_WINDSPEED+ " REAL NOT NULL, " +
                 WeatherEntry.COLUMN_DEGREES + " REAL NOT NULL, " +
-
+                WeatherEntry.COLUMN_WINDDIRECTION + " REAL NOT NULL, " +
                 //Set up location key as foreign key.
                 "FOREIGN KEY ( " + WeatherEntry.COLUMN_LOC_KEY + ") REFERENCES " +
                 LocationEntry.TABLE_NAME + "(" + LocationEntry._ID + " ), " +
