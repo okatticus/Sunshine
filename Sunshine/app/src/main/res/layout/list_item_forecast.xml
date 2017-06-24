@@ -1,13 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="24dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:id="@+id/list_item_forecast">
 
     <TextView
         android:id="@+id/list_item_date_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text = "Monday"
+        android:gravity="center_vertical"
+        android:minHeight="?android:attr/listPreferredItemHeight" />
+
+    <TextView
+        android:text="-"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="?android:attr/listPreferredItemHeight" />
+
+    <TextView
+        android:id="@+id/list_item_forecast_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text = "Clouds"
         android:gravity="center_vertical"
         android:minHeight="?android:attr/listPreferredItemHeight" />
 
@@ -21,20 +38,7 @@
     <TextView
         android:id="@+id/list_item_high_id"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:minHeight="?android:attr/listPreferredItemHeight" />
-
-    <TextView
-        android:text="-"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:minHeight="?android:attr/listPreferredItemHeight" />
-
-    <TextView
-        android:id="@+id/list_item_low_id"
-        android:layout_width="wrap_content"
+        android:text="69"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:minHeight="?android:attr/listPreferredItemHeight" />
@@ -48,9 +52,10 @@
 
 
     <TextView
-        android:id="@+id/list_item_forecast_id"
+        android:id="@+id/list_item_low_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text = "12"
         android:gravity="center_vertical"
         android:minHeight="?android:attr/listPreferredItemHeight" />
 </LinearLayout>

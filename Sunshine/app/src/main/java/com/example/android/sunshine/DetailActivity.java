@@ -53,7 +53,7 @@ public class DetailActivity extends AppCompatActivity {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
             shareIntent.setType("text/plain");
-            shareIntent.putExtra(Intent.EXTRA_TEXT,"Forecast: "+ mforecast+APP_NAME);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, "Forecast: " + mforecast + APP_NAME);
             return shareIntent;
         }
 
@@ -65,7 +65,7 @@ public class DetailActivity extends AppCompatActivity {
             MenuItem item = menu.findItem(R.id.id_menu_share);
             //MenuItemCompat
             mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
-            if(mShareActionProvider!=null)  mShareActionProvider.setShareIntent(createShareIntent());
+            if(mShareActionProvider != null)  mShareActionProvider.setShareIntent(createShareIntent());
         }
 
         public boolean onOptionsItemSelected(MenuItem item){

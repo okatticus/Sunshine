@@ -107,5 +107,14 @@ public class WeatherContract {
         return format.format(date);
 
     }
+    public static Date getDateFromDb(String dateText){
+        SimpleDateFormat dbDateFormat = new SimpleDateFormat();
+        try{
+            return dbDateFormat.parse(dateText);
+        }catch( ParseException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
 

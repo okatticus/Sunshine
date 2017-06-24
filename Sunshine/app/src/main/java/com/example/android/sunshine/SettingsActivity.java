@@ -13,6 +13,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.example.android.sunshine.data.FetchWeatherTask;
+import com.example.android.sunshine.data.WeatherContract;
+
 import java.util.List;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -34,5 +37,6 @@ public class SettingsActivity extends AppCompatActivity {
         if(item.getItemId()==android.R.id.home)onBackPressed();
         return super.onOptionsItemSelected(item);
     }
+
 
 }
