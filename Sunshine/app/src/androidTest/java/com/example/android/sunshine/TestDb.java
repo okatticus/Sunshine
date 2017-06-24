@@ -70,7 +70,7 @@ public class TestDb extends AndroidTestCase {
             int longIndex = cursor.getColumnIndex(LocationEntry.COLUMN_COORD_LONG);
             double longitude = cursor.getDouble(longIndex);
             assertEquals(testLatitude,latitude);
-          assertEquals(testLocationSetting,location);
+            assertEquals(testLocationSetting,location);
             assertEquals(testLongitude,longitude);
             assertEquals(testName,name);
         }else{
