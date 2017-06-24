@@ -9,7 +9,7 @@
         android:id="@+id/list_item_date_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text = "Monday"
+
         android:gravity="center_vertical"
         android:minHeight="?android:attr/listPreferredItemHeight" />
 
@@ -24,7 +24,7 @@
         android:id="@+id/list_item_forecast_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text = "Clouds"
+        android:textAllCaps = "true"
         android:gravity="center_vertical"
         android:minHeight="?android:attr/listPreferredItemHeight" />
 

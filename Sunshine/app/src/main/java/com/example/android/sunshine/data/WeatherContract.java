@@ -100,11 +100,10 @@ public class WeatherContract {
        // SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
        /* SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSX");
         date  = sdf.parse("2014-09-17T12:00:44.0000000Z");*/
-        SimpleDateFormat format =
-                new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
-        format.setTimeZone(TimeZone.getTimeZone("UTC"));
-        Date parse = format.parse("2014-09-17T12:00:44.0000000Z");
-        return format.format(date);
+        SimpleDateFormat format2 =
+                new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        format2.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return format2.format(date);
 
     }
     public static Date getDateFromDb(String dateText){

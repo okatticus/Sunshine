@@ -130,6 +130,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onStart() {
         super.onStart();
+        mAdapter.notifyDataSetChanged();
         updateWeather();
     }
 
@@ -188,6 +189,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         SQLiteDatabase liteDatabase = dbHelper.getReadableDatabase();
         Cursor cursor =
                 liteDatabase.query(WeatherEntry.TABLE_NAME, null, null, null, null, null, null);
+        mAdapter.notifyDataSetChanged();
         mAdapter.swapCursor(cursor);
     }
 
