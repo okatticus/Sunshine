@@ -2,6 +2,7 @@ package com.example.android.sunshine;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,8 +21,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.example.android.sunshine.data.DbHelper;
 import com.example.android.sunshine.data.FetchWeatherTask;
 import com.example.android.sunshine.data.WeatherContract;
+import com.example.android.sunshine.data.WeatherContract.WeatherEntry;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -32,11 +36,11 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     private static final int FORECAST_LOADER = 0;
     //Add array of columns to top of forecast fragment
     public static final String [] FORECAST_COLUMNS={
-            WeatherContract.WeatherEntry.TABLE_NAME+"."+ WeatherContract.WeatherEntry._ID,
-            WeatherContract.WeatherEntry.COLUMN_DATE,
-            WeatherContract.WeatherEntry.COLUMN_SHORT_DESCRIPTION,
-            WeatherContract.WeatherEntry.COLUMN_MAX,
-            WeatherContract.WeatherEntry.COLUMN_MIN,
+            WeatherEntry.TABLE_NAME+"."+ WeatherEntry._ID,
+            WeatherEntry.COLUMN_DATE,
+            WeatherEntry.COLUMN_SHORT_DESCRIPTION,
+            WeatherEntry.COLUMN_MAX,
+            WeatherEntry.COLUMN_MIN,
             WeatherContract.LocationEntry.COLUMN_LOC_SETTING,
     };
 
@@ -78,10 +82,10 @@ public void onCreate(Bundle savedInstancestate){
                 R.layout.list_item_forecast,
                 null,
                 new String[]{
-                        WeatherContract.WeatherEntry.COLUMN_DATE,
-                        WeatherContract.WeatherEntry.COLUMN_SHORT_DESCRIPTION,
-                        WeatherContract.WeatherEntry.COLUMN_MIN,
-                        WeatherContract.WeatherEntry.COLUMN_MAX},
+                        WeatherEntry.COLUMN_DATE,
+                        WeatherEntry.COLUMN_SHORT_DESCRIPTION,
+                        WeatherEntry.COLUMN_MIN,
+                        WeatherEntry.COLUMN_MAX},
                 new int[]{
                         R.id.list_item_date_id,
                         R.id.listView_id,
@@ -139,17 +143,13 @@ public void onCreate(Bundle savedInstancestate){
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-        String startdate = null;
-        try {
-            startdate = WeatherContract.getDbDateString(new Date());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + "ASC";
+        String sortOrder = WeatherEntry.COLUMN_DATE + " ASC";
 
         mLocation = Utility.getPreferredLocation(getActivity());
-        Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(
-                mLocation,startdate);
+
+        Uri weatherForLocationUri = WeatherEntry.buildWeatherLocation(
+                mLocation);
+
             return new CursorLoader(
                 getActivity(),
                 weatherForLocationUri,
@@ -162,7 +162,10 @@ public void onCreate(Bundle savedInstancestate){
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mAdapter.swapCursor(data);
+        DbHelper dbHelper = new DbHelper(getContext());
+        SQLiteDatabase liteDatabase = dbHelper.getReadableDatabase();
+        Cursor cursor = liteDatabase.query(WeatherEntry.TABLE_NAME,null,null,null,null,null,null);
+        mAdapter.swapCursor(cursor);
     }
 
     @Override

@@ -4,9 +4,13 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.example.android.sunshine.data.WeatherContract.WeatherEntry;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -161,19 +165,19 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
                 double max = temperatureObject.getDouble(OWM_TEMP_MAX);
 
                 ContentValues values = new ContentValues();
-                values.put(WeatherContract.WeatherEntry.COLUMN_LOC_KEY, cityName);
-                values.put(WeatherContract.WeatherEntry.COLUMN_DATE, WeatherContract.getDbDateString
+                values.put(WeatherEntry.COLUMN_LOC_KEY, cityName);
+                values.put(WeatherEntry.COLUMN_DATE, WeatherContract.getDbDateString
                         (new Date(dateTime* 1000)));
-                values.put(WeatherContract.WeatherEntry.COLUMN_DATE_ASC, WeatherContract.getDbDateString
+                values.put(WeatherEntry.COLUMN_DATE_ASC, WeatherContract.getDbDateString
                         (new Date(dateTime* 1000)));
-                values.put(WeatherContract.WeatherEntry.COLUMN_HUMITY, humidity);
-                values.put(WeatherContract.WeatherEntry.COLUMN_WINDSPEED, windSpeed);
-                values.put(WeatherContract.WeatherEntry.COLUMN_PRESSURE, pressure);
-                values.put(WeatherContract.WeatherEntry.COLUMN_SHORT_DESCRIPTION, description);
-                values.put(WeatherContract.WeatherEntry.COLUMN_MAX, max);
-                values.put(WeatherContract.WeatherEntry.COLUMN_MIN, min);
-                values.put(WeatherContract.WeatherEntry.COLUMN_WINDDIRECTION, windDirection);
-                values.put(WeatherContract.WeatherEntry.COLUMN_WEATHER_ID, weatherId);
+                values.put(WeatherEntry.COLUMN_HUMITY, humidity);
+                values.put(WeatherEntry.COLUMN_WINDSPEED, windSpeed);
+                values.put(WeatherEntry.COLUMN_PRESSURE, pressure);
+                values.put(WeatherEntry.COLUMN_SHORT_DESCRIPTION, description);
+                values.put(WeatherEntry.COLUMN_MAX, max);
+                values.put(WeatherEntry.COLUMN_MIN, min);
+                values.put(WeatherEntry.COLUMN_WINDDIRECTION, windDirection);
+                values.put(WeatherEntry.COLUMN_WEATHER_ID, weatherId);
 
                 weatherVector.add(values);
             }//for loop ends
@@ -182,8 +186,10 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
                 ContentValues[] valuesArray = new ContentValues[weatherVector.size()];
                 weatherVector.toArray(valuesArray);
                 mContext.getContentResolver().bulkInsert(
-                        WeatherContract.WeatherEntry.CONTENT_URI, valuesArray);
+                        WeatherEntry.CONTENT_URI, valuesArray);
             }
+
+
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
