@@ -34,19 +34,22 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     //Add array of columns to top of forecast fragment
     public static final String[] FORECAST_COLUMNS = {
             WeatherEntry.TABLE_NAME + "."
-                    + WeatherContract.WeatherEntry._ID,
+                    + WeatherEntry._ID,
             WeatherEntry.COLUMN_DATE,
             WeatherEntry.COLUMN_SHORT_DESCRIPTION,
             WeatherEntry.COLUMN_MAX,
             WeatherEntry.COLUMN_MIN,
             LocationEntry.COLUMN_LOC_SETTING,
     };
-    public static final int COL_WEATHER_ID = 0;
-    public static final int COL_WEATHER_DATE = 1;
-    public static final int COL_WEATHER_DESC = 2;
-    public static final int COL_WEATHER_MAX = 3;
-    public static final int COL_WEATHER_MIN = 4;
-    public static final int COL_LOC_SETTING = 5;
+    //These indices are tied to the forecast columns
+    //public static final int COL_WEATHER_ID = 1;
+    //public static final int COL_WEATHER_DATE = 2;
+    //public static final int COL_WEATHER_DESC = 2;
+    //public static final int COL_WEATHER_MAX = 3;
+    //public static final int COL_WEATHER_MIN = 4;
+    //public static final int COL_LOC_SETTING = 6;
+
+
     private static final int FORECAST_LOADER = 0;
     private String mLocation;
     private String LOG_TAG = "ForecastFragment.java";
@@ -98,21 +101,22 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 mAdapter = (SimpleCursorAdapter) adapterView.getAdapter();
                 Cursor cursor = mAdapter.getCursor();
+                String forecast;
                 if (cursor != null && cursor.moveToPosition(position)) {
                     boolean isMetric = Utility.isMetric(getActivity());
                     //try {
-                        String forecast = String.format("%s - %s - %s/%s",
-                                //Utility.formatDate(cursor.getString(COL_WEATHER_DATE)),
-                                cursor.getString(COL_WEATHER_DATE),
-                                cursor.getString(COL_WEATHER_DESC),
-                                Utility.formatTemperature(cursor.getDouble(COL_WEATHER_MAX), isMetric),
-                                Utility.formatTemperature(cursor.getDouble(COL_WEATHER_MIN), isMetric)
-                        );
-                        Intent intent = new Intent(getActivity(), DetailActivity.class);
-                        intent.putExtra(Intent.EXTRA_TEXT, forecast);
-                        startActivity(intent);
+                    forecast = String.format("%s - %s - %s/%s",
+                            cursor.getString(cursor.getColumnIndex(WeatherEntry.COLUMN_DATE)),
+                            cursor.getString(cursor.getColumnIndex(WeatherEntry.COLUMN_SHORT_DESCRIPTION)),
+                            Utility.formatTemperature((cursor.getDouble(cursor.getColumnIndex(WeatherEntry.COLUMN_MAX))), isMetric),
+                            Utility.formatTemperature(cursor.getDouble(cursor.getColumnIndex(WeatherEntry.COLUMN_MIN)), isMetric)
+                    );
+                    // forecast = " Hubabaloo!! ";
+                    Intent intent = new Intent(getActivity(), DetailActivity.class);
+                    intent.putExtra(Intent.EXTRA_TEXT, forecast);
+                    startActivity(intent);
                     //} catch (ParseException e) {
-                        //Log.v(LOG_TAG, "Parse exception. ");
+                    //Log.v(LOG_TAG, "Parse exception. ");
                     //}
                 }
             }

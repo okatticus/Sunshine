@@ -172,6 +172,8 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
                 values.put(WeatherEntry.COLUMN_LOC_KEY, cityName);
                 values.put(WeatherEntry.COLUMN_DATE, WeatherContract.getDbDateString
                         (new Date(dateTime * 1000)));
+               // Log.v(LOG_TAG,WeatherContract.getDbDateString
+                 //               (new Date(dateTime * 1000)));
                 values.put(WeatherEntry.COLUMN_DATE_ASC, WeatherContract.getDbDateString
                         (new Date(dateTime * 1000)));
                 values.put(WeatherEntry.COLUMN_HUMITY, humidity);
