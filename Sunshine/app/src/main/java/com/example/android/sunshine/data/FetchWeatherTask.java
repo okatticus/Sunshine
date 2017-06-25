@@ -132,7 +132,8 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
         final String OWM_TEMP_MIN = "min";
         final String OWM_DATE = "dt";
 
-        final String OWM_DESCRIPTION_NAME = "description";
+        final String OWM_DESCRIPTION_NAME = "main" +
+                "";
         final String OWM_WEATHER_ID = "id";
         try {
             JSONObject forecastJson = new JSONObject(forecastJsonStr);

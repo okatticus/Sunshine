@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.example.android.sunshine.R;
 import com.example.android.sunshine.data.WeatherContract;
@@ -17,6 +18,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import static android.provider.Settings.System.DATE_FORMAT;
+import static android.provider.Settings.System.getString;
 
 
 /**
@@ -35,11 +37,10 @@ public class Utility {
         // SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
        /* SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSX");
         date  = sdf.parse("2014-09-17T12:00:44.0000000Z");*/
-      /*SimpleDateFormat format =
-                new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
-        format.setTimeZone(TimeZone.getTimeZone("UTC"));
-        Date parse = format.parse("2014-09-17T12:00:44.0000000Z");
-        return format.format(dateString);*/
+     // SimpleDateFormat format2 =
+       //         new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+       // format2.setTimeZone(TimeZone.getTimeZone("UTC"));
+       // return format2.format(dateString);
        Date date = WeatherContract.getDateFromDb(dateString);
         return DateFormat.getDateInstance().format(date);
     }

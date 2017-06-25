@@ -78,10 +78,10 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                 R.layout.list_item_forecast,
                 null,
                 new String[]{
-                        WeatherContract.WeatherEntry.COLUMN_DATE,
-                        WeatherContract.WeatherEntry.COLUMN_SHORT_DESCRIPTION,
-                        WeatherContract.WeatherEntry.COLUMN_MIN,
-                        WeatherContract.WeatherEntry.COLUMN_MAX},
+                        WeatherEntry.COLUMN_DATE,
+                        WeatherEntry.COLUMN_SHORT_DESCRIPTION,
+                        WeatherEntry.COLUMN_MIN,
+                        WeatherEntry.COLUMN_MAX},
                 new int[]{
                         R.id.list_item_date_id,
                         R.id.list_item_forecast_id,
@@ -100,9 +100,10 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                 Cursor cursor = mAdapter.getCursor();
                 if (cursor != null && cursor.moveToPosition(position)) {
                     boolean isMetric = Utility.isMetric(getActivity());
-                    try {
+                    //try {
                         String forecast = String.format("%s - %s - %s/%s",
-                                Utility.formatDate(cursor.getString(COL_WEATHER_DATE)),
+                                //Utility.formatDate(cursor.getString(COL_WEATHER_DATE)),
+                                cursor.getString(COL_WEATHER_DATE),
                                 cursor.getString(COL_WEATHER_DESC),
                                 Utility.formatTemperature(cursor.getDouble(COL_WEATHER_MAX), isMetric),
                                 Utility.formatTemperature(cursor.getDouble(COL_WEATHER_MIN), isMetric)
@@ -110,9 +111,9 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                         Intent intent = new Intent(getActivity(), DetailActivity.class);
                         intent.putExtra(Intent.EXTRA_TEXT, forecast);
                         startActivity(intent);
-                    } catch (ParseException e) {
-                        Log.v(LOG_TAG, "Parse exception. ");
-                    }
+                    //} catch (ParseException e) {
+                        //Log.v(LOG_TAG, "Parse exception. ");
+                    //}
                 }
             }
         });
