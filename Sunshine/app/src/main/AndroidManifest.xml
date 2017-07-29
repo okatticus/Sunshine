@@ -27,6 +27,9 @@
         </activity>
         <activity android:name=".SettingsActivity" />
         <activity android:name=".SettingsFragment"></activity>
+    <provider
+        android:authorities="com.example.android.sunshine.app"
+        android:name=".data.WeatherProvider"/>
     </application>
 
 </manifest>

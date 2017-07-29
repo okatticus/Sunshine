@@ -123,7 +123,7 @@ public boolean onOptionsItemSelected(MenuItem item)
             return highLowStr;
         }
 
-        //Take JSON format string and pull out needed data.
+        //Take JSON format string and pull out needed com.example.android.sunshine.data.
         private String[] getWeatherData(String forecastJsonStr, int numDays)
                 throws JSONException {
             final String OWM_List = "list";
@@ -174,7 +174,7 @@ public boolean onOptionsItemSelected(MenuItem item)
             try {
 
                 final String FORECAST_BASE_URL =
-                        "http://api.openweathermap.org/data/2.5/forecast/daily?";
+                        "http://api.openweathermap.org/com.example.android.sunshine.data/2.5/forecast/daily?";
                 final String QUERY_PARAM = "q";
                 final String FORMAT_PARAM = "mode";
                 final String UNITS_PARAM = "units";
@@ -244,7 +244,7 @@ public boolean onOptionsItemSelected(MenuItem item)
                 mAdapter.clear();
                 for (String dayForecastString : result) {
                     mAdapter.add(dayForecastString);
-                    //New data from the server is shown
+                    //New com.example.android.sunshine.data from the server is shown
                 }
             }
         }
