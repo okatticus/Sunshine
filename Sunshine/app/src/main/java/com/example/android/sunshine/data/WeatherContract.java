@@ -3,7 +3,6 @@ package com.example.android.sunshine.data;
 import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
-
 import static com.example.android.sunshine.data.WeatherContract.WeatherEntry.COLUMN_DATETEXT;
 
 /**
@@ -17,6 +16,22 @@ public class WeatherContract {
     public static String PATH_LOCATION ="location";
     public static String PATH_WEATHER = "weather";
 
+    public static final class LocationEntry implements BaseColumns{
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_LOCATION).build();
+        public static final String CONTENT_TYPE =
+                "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + PATH_LOCATION;
+        public static final String CONTENT_ITEM_TYPE =
+                "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_LOCATION;
+        public static final String TABLE_NAME = "location";
+        public static final String COLUMN_LOCATION_SETTING = "location_setting";
+        public static final String COLUMN_CITY_NAME = "city_name";
+        public static final String COLUMN_COORD_LAT = "latitude";
+        public static final String COLUMN_COORD_LONG = "longitude";
+            public static Uri buildLocationUri(long _id){
+                return ContentUris.withAppendedId(CONTENT_URI,_id);
+            }
+        }
     public static final class WeatherEntry implements BaseColumns{
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_WEATHER).build();
@@ -24,7 +39,8 @@ public class WeatherContract {
                 "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + PATH_WEATHER;
         public static final String CONTENT_ITEM_TYPE =
                 "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_WEATHER;
-        public static final String TABLE_NAME = "Weather";
+
+        public static final String TABLE_NAME = "weather";
         public static final String COLUMN_LOC_KEY = "location" +
                 "_id";
         public static final String COLUMN_DATETEXT = "date";
@@ -36,6 +52,9 @@ public class WeatherContract {
         public static final String COLUMN_WIND_DIR = "wind_dir";
         public static final String COLUMN_WINDSPEED = "windspeed";
         public static final String COLUMN_PRESSURE = "pressure";
+        public static Uri buildWeatherUri(long id){
+            return ContentUris.withAppendedId(CONTENT_URI,id);
+        }
         public static Uri buildWeatherLocation(String locationSetting){
             return  CONTENT_URI.buildUpon().appendPath(locationSetting).build();
         }
@@ -56,23 +75,6 @@ public class WeatherContract {
         public static String getStartDateFromUri(Uri uri){
             return uri.getQueryParameter(COLUMN_DATETEXT);
         }
-
     }
-    public static final class LocationEntry implements BaseColumns{
-        public static final Uri CONTENT_URI =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_WEATHER).build();
-        public static final String CONTENT_TYPE =
-                "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + PATH_WEATHER;
-        public static final String CONTENT_ITEM_TYPE =
-                "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_WEATHER;
-        public static final String TABLE_NAME = "Location";
-        public static final String COLUMN_LOCATION_SETTING = "location_setting";
-        public static final String COLUMN_CITY_NAME = "city_name";
-        public static final String COLUMN_COORD_LAT = "latitude";
-        public static final String COLUMN_COORD_LONG = "longitude";
-            public static Uri buildLocationUri(long _id){
-                return ContentUris.withAppendedId(CONTENT_URI,_id);
-            }
-        }
     }
 

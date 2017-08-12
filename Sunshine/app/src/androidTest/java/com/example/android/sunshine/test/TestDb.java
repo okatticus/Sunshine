@@ -5,9 +5,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 import android.util.Log;
+
 import com.example.android.sunshine.data.WeatherDbHelper;
 import com.example.android.sunshine.data.WeatherContract.WeatherEntry;
 import com.example.android.sunshine.data.WeatherContract.LocationEntry;
+
 import java.util.Map;
 import java.util.Set;
 
@@ -15,9 +17,27 @@ import java.util.Set;
  * Created by Apoorva on 7/18/2017.
  */
 
-public class TestDb extends AndroidTestCase{
+public class TestDb extends AndroidTestCase {
 
     final String LOG_TAG = " TestDb.java";
+    public String TEST_CITY_NAME = " North Pole";
+
+    static void validateCursor(Cursor valueCursor, ContentValues expectedValues) {
+        assertTrue(valueCursor.moveToFirst());
+        Set<Map.Entry<String, Object>> valueSet = expectedValues.valueSet();
+
+        //loop to check expected values
+        for (Map.Entry<String, Object> expected : valueSet) {
+            String columnName = expected.getKey();
+            int index = valueCursor.getColumnIndex(columnName);
+            if (index != -1) {
+                String expectedValue;
+                expectedValue = expected.getValue().toString();
+                assertEquals(expectedValue, valueCursor.getString(index));
+            }
+        }
+    }
+
     public void testCreateDb() throws Throwable {
         mContext.deleteDatabase(WeatherDbHelper.DATABASE_NAME);
         SQLiteDatabase db;
@@ -26,8 +46,8 @@ public class TestDb extends AndroidTestCase{
         assertEquals(true, db.isOpen());
         db.close();
     }
-    public String TEST_CITY_NAME = " North Pole";
-    public ContentValues getWeatherContentValues(long locationRowId){
+
+    public ContentValues getWeatherContentValues(long locationRowId) {
         ContentValues weatherValues = new ContentValues();
         weatherValues.put(WeatherEntry.COLUMN_LOC_KEY, locationRowId);
         weatherValues.put(WeatherEntry.COLUMN_DATETEXT, "20141205");
@@ -41,7 +61,8 @@ public class TestDb extends AndroidTestCase{
         weatherValues.put(WeatherEntry.COLUMN_WEATHER_ID, 750);
         return weatherValues;
     }
-    public ContentValues getLocationContentValues(){
+
+    public ContentValues getLocationContentValues() {
 
         String testLocationSetting = "99002";
         double testLatitude = 49.3;
@@ -53,6 +74,7 @@ public class TestDb extends AndroidTestCase{
         values.put(LocationEntry.COLUMN_LOCATION_SETTING, testLocationSetting);
         return values;
     }
+
     public void testInsertReadDb() {
 
 
@@ -77,8 +99,8 @@ public class TestDb extends AndroidTestCase{
                 null,
                 null
         );
-        if(cursor.moveToFirst()){
-           validateCursor(values, cursor );
+        if (cursor.moveToFirst()) {
+            validateCursor(cursor, values);
             cursor.close();
 
             ContentValues weatherValues = getWeatherContentValues(locationRowId);
@@ -96,16 +118,16 @@ public class TestDb extends AndroidTestCase{
                     WeatherEntry.COLUMN_WINDSPEED,
                     WeatherEntry.COLUMN_WEATHER_ID
             };*/
-            Cursor cursorWeather =db.query(WeatherEntry.TABLE_NAME,
+            Cursor cursorWeather = db.query(WeatherEntry.TABLE_NAME,
                     null,//Leaving columns null returns all cols.
                     null,
                     null,
                     null,
                     null,
                     null);
-        if(cursorWeather.moveToFirst()){
-            int dateIndex = cursorWeather.getColumnIndex(WeatherEntry.COLUMN_DATETEXT);
-            String date = cursorWeather.getString(dateIndex);
+            if (cursorWeather.moveToFirst()) {
+                int dateIndex = cursorWeather.getColumnIndex(WeatherEntry.COLUMN_DATETEXT);
+                String date = cursorWeather.getString(dateIndex);
 
            /* int dirIndex  = cursorWeather.getColumnIndex(WeatherEntry.COLUMN_WIND_DIR);
             String dir = cursorWeather.getString(dirIndex);
@@ -130,34 +152,13 @@ public class TestDb extends AndroidTestCase{
 
             int weatherIdIndex = cursorWeather.getColumnIndex(WeatherEntry.COLUMN_WEATHER_ID);
             int weather_id = cursorWeather.getInt(weatherIdIndex);*/
-           validateCursor(weatherValues,cursorWeather);
+                validateCursor(cursorWeather, weatherValues);
 
-        }
-        else{
-            fail(" No weather values! ");
-        }
-        }
-        else
-        {
-            fail( "No values returned!?!");
+            } else {
+                fail(" No weather values! ");
+            }
+        } else {
+            fail("No values returned!?!");
         }
     }
-   static void validateCursor(ContentValues expectedValues, Cursor valueCursor)
-   {
-       assertTrue(valueCursor.moveToFirst());
-       Set<Map.Entry<String, Object>> valueSet = expectedValues.valueSet();
-
-       //loop to check expected values
-       for(Map.Entry<String, Object> expected : valueSet )
-       {
-           String columnName = expected.getKey();
-           int index = valueCursor.getColumnIndex(columnName);
-           if(index != -1)
-           {
-               String expectedValue;
-               expectedValue = expected.getValue().toString();
-               assertEquals(expectedValue,valueCursor.getString(index));
-           }
-       }
-   }
 }

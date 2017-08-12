@@ -1,6 +1,7 @@
 package com.example.android.sunshine.data;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
@@ -41,7 +42,56 @@ public class WeatherProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-        return null;
+        Cursor retCursor;
+        switch (matcher.match(uri)) {
+            case WEATHER_WITH_LOCATION_AND_DATE: {
+                retCursor = null;
+                break;
+            }
+            case WEATHER_WITH_LOCATION: {
+                retCursor = null;
+                break;
+            }
+            case WEATHER: {
+                retCursor = helper.getReadableDatabase().query(
+                        WeatherContract.WeatherEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
+            case LOCATION_ID: {
+                retCursor = helper.getReadableDatabase().query(
+                        WeatherContract.WeatherEntry.TABLE_NAME,
+                        projection,
+                        WeatherContract.LocationEntry._ID + "= '" + ContentUris.parseId(uri) + "'",
+                        null,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
+            case LOCATION: {
+                retCursor = helper.getReadableDatabase().query(
+                        WeatherContract.WeatherEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+               break;
+            }
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        return retCursor;
     }
 
     @Nullable
