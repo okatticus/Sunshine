@@ -1,7 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:minHeight="?android:attr/listPreferredItemHeight"
-    android:gravity="center_vertical"
-    android:id="@+id/list_text_id"/>
+    android:layout_height="64dp"
+    android:orientation="horizontal"
+    android:id="@+id/list_item_forecast"
+    android:paddingLeft="8sp">
+
+    <TextView
+        android:id="@+id/list_item_date_id"
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:gravity="center_vertical"
+        android:minHeight="?android:attr/listPreferredItemHeight" />
+
+    <TextView
+        android:text=" - "
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:gravity="center_vertical"
+        android:minHeight="?android:attr/listPreferredItemHeight" />
+
+    <TextView
+        android:id="@+id/list_item_forecast_id"
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:textAllCaps = "true"
+        android:gravity="center_vertical"
+        android:minHeight="?android:attr/listPreferredItemHeight" />
+
+    <TextView
+        android:text=" - "
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:gravity="center_vertical"
+        android:minHeight="?android:attr/listPreferredItemHeight" />
+
+    <TextView
+        android:id="@+id/list_item_high_id"
+        android:layout_width="wrap_content"
+        android:text="69"
+        android:layout_height="64dp"
+        android:gravity="center_vertical"
+        android:minHeight="?android:attr/listPreferredItemHeight" />
+
+    <TextView
+        android:text="/"
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:gravity="center_vertical"
+        android:minHeight="?android:attr/listPreferredItemHeight" />
+
+
+    <TextView
+        android:id="@+id/list_item_low_id"
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:text = "12"
+        android:gravity="center_vertical"
+        android:minHeight="?android:attr/listPreferredItemHeight" />
+</LinearLayout>

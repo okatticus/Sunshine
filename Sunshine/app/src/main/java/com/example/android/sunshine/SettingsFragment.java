@@ -6,6 +6,10 @@ import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.android.sunshine.data.FetchWeatherTask;
+import com.example.android.sunshine.data.WeatherContract;
+
 public class SettingsFragment extends PreferenceFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState){
@@ -14,4 +18,19 @@ public class SettingsFragment extends PreferenceFragment {
         EditTextPreference locPref = (EditTextPreference)findPreference(getString(R.string.pin_location_key));
     }
 
+  /*
+    public boolean onPreferenceChange(Preference preference, Object value)
+    {
+        String stringValue = value.toString();
+        if(!mBindingPreference)
+        {
+            FetchWeatherTask weatherTask = new FetchWeatherTask(this);
+            String location= value.toString();
+            weatherTask.execute(location);
+        }
+        else{
+            getContentResolver().notifyChange(WeatherContract.WeatherEntry.CONTENT_URI,null);
+        }
+
+    }*/
 }
