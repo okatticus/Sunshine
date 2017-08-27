@@ -18,10 +18,11 @@ import com.example.android.sunshine.data.WeatherContract;
 
 import java.util.List;
 
-public class SettingsActivity extends AppCompatActivity {
-
+public class SettingsActivity extends AppCompatActivity
+{
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         if(getSupportActionBar()!=null) {
                         getSupportActionBar().setTitle(getString(R.string.settings));
@@ -37,6 +38,4 @@ public class SettingsActivity extends AppCompatActivity {
         if(item.getItemId()==android.R.id.home)onBackPressed();
         return super.onOptionsItemSelected(item);
     }
-
-
 }

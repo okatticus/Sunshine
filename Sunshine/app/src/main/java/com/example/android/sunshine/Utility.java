@@ -1,33 +1,19 @@
 package com.example.android.sunshine;
-
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.util.Log;
-
-import com.example.android.sunshine.R;
 import com.example.android.sunshine.data.WeatherContract;
-
 import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
-
-import static android.provider.Settings.System.DATE_FORMAT;
-import static android.provider.Settings.System.getString;
-
 
 /**
  * Created by Apoorva on 6/21/2017.
  */
 
 public class Utility {
-    public static String getPreferredLocation(Context context){
 
+    public static String getPreferredLocation(Context context){
         SharedPreferences prefs;
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getString(
@@ -40,9 +26,9 @@ public class Utility {
         return DateFormat.getDateInstance().format(date);
     }
 
-    public static String formatTemperature(Double temperature , Boolean isMetric){
+    public static String formatTemperature(Double temperature , Boolean isMetric1){
         double t = temperature;
-        if(isMetric != true)
+        if(isMetric1 != true)
         {
             t=9*temperature/5+32;
         }

@@ -39,6 +39,7 @@ private final String LOG_TAG= "MainActivity";
     }
     @Override
     protected void onResume(){
+            //adapter.notifyDataSetChanged();
         super.onResume();
         Log.v(LOG_TAG,"onResume(); ");
     }
@@ -63,7 +64,6 @@ private final String LOG_TAG= "MainActivity";
         {
            getMap();
         }
-
     return super.onOptionsItemSelected(item);
     }
     public void getMap()

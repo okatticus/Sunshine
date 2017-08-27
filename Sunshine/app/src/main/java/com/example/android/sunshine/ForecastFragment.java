@@ -41,20 +41,10 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             WeatherEntry.COLUMN_MIN,
             LocationEntry.COLUMN_LOC_SETTING,
     };
-    //These indices are tied to the forecast columns
-    //public static final int COL_WEATHER_ID = 1;
-    //public static final int COL_WEATHER_DATE = 2;
-    //public static final int COL_WEATHER_DESC = 2;
-    //public static final int COL_WEATHER_MAX = 3;
-    //public static final int COL_WEATHER_MIN = 4;
-    //public static final int COL_LOC_SETTING = 6;
-
-
     private static final int FORECAST_LOADER = 0;
     private String mLocation;
     private String LOG_TAG = "ForecastFragment.java";
     private SimpleCursorAdapter mAdapter;
-
     public ForecastFragment() {
 
     }
@@ -90,8 +80,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                         R.id.list_item_forecast_id,
                         R.id.list_item_low_id,
                         R.id.list_item_high_id
-                },
-                0
+                }
         );
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         ListView listView = (ListView) rootView.findViewById(R.id.listView_id);
@@ -104,20 +93,15 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                 String forecast;
                 if (cursor != null && cursor.moveToPosition(position)) {
                     boolean isMetric = Utility.isMetric(getActivity());
-                    //try {
                     forecast = String.format("%s - %s - %s/%s",
                             cursor.getString(cursor.getColumnIndex(WeatherEntry.COLUMN_DATE)),
                             cursor.getString(cursor.getColumnIndex(WeatherEntry.COLUMN_SHORT_DESCRIPTION)),
                             Utility.formatTemperature((cursor.getDouble(cursor.getColumnIndex(WeatherEntry.COLUMN_MAX))), isMetric),
                             Utility.formatTemperature(cursor.getDouble(cursor.getColumnIndex(WeatherEntry.COLUMN_MIN)), isMetric)
                     );
-                    // forecast = " Hubabaloo!! ";
                     Intent intent = new Intent(getActivity(), DetailActivity.class);
                     intent.putExtra(Intent.EXTRA_TEXT, forecast);
                     startActivity(intent);
-                    //} catch (ParseException e) {
-                    //Log.v(LOG_TAG, "Parse exception. ");
-                    //}
                 }
             }
         });
@@ -135,14 +119,14 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onStart() {
         super.onStart();
-        mAdapter.notifyDataSetChanged();
         updateWeather();
     }
 
     @Override
     public void onResume() {
+        mAdapter.notifyDataSetChanged();
         super.onResume();
-        if (mLocation != null && !Utility.getPreferredLocation(getActivity()).equals(mLocation)) ;
+        if (mLocation != null && !Utility.getPreferredLocation(getActivity()).equals(mLocation))
         updateWeather();
     }
 
@@ -158,6 +142,10 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             case R.id.refresh_id:
                 updateWeather();
                 break;
+            case R.id.settings_id:
+                mAdapter.notifyDataSetChanged();
+                startActivity(new Intent(getActivity(),SettingsActivity.class));
+                break;
 
         }
         return super.onOptionsItemSelected(item);
@@ -165,8 +153,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
-
         String startdate = null;
         String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
         try {
@@ -197,7 +183,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         mAdapter.notifyDataSetChanged();
         mAdapter.swapCursor(cursor);
     }
-
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mAdapter.swapCursor(null);
